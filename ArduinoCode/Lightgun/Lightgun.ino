@@ -5,12 +5,25 @@
 #include <Keyboard.h>
 #include "Wire.h"
 
-#define triggerA 2
-#define triggerB 3
-#define mag 9
-#define lid 8
-#define fireLED 4
-#define warningLED 15
+#define triggerA 8  // Click izquierda mouse
+#define triggerB 9  // Click derecho mouse
+#define lid 7       // Click medio mouse
+#define mag 6       // Backspace keyboard
+#define fireLED 4   // LED DISPARO
+#define warningLED 5 // LED no 4 puntos
+
+//Andres defino las los pines de los botones extras
+#define BA 10 // A keyboard
+#define BB 16 // B keyboard
+#define BX 14 // X keyboard
+#define BY 15 // Y keyboard
+
+//Andres defino las teclas
+uint8_t Teclado_A =   0x41;                  // Letra A
+uint8_t Teclado_B =   0x42;                  // Letra B
+uint8_t Teclado_X =   0x58;                  // Letra X
+uint8_t Teclado_Y =   0x59;                  // Letra Y
+
 
 
 DFRobotIRPosition camera;
@@ -27,6 +40,12 @@ int button_triggerB = 0;
 int button_mag = 0;
 int button_lid = 0;
 
+// Defino el variables de botones 
+int button_BA = 0;
+int button_BB = 0;
+int button_BX = 0;
+int button_BY = 0;
+
 
 
 int warningLEDState = 0;
@@ -39,6 +58,9 @@ int screenH = 1080;
 int gunCenterX = 595;
 int gunCenterY = 325;
 
+
+
+
 void setup() {
 
   pinMode(fireLED, OUTPUT);
@@ -47,6 +69,14 @@ void setup() {
   pinMode(triggerB, INPUT_PULLUP);
   pinMode(mag, INPUT_PULLUP);
   pinMode(lid, INPUT_PULLUP);
+
+  //andres defino el modo del pin
+  pinMode(BA, INPUT_PULLUP);
+  pinMode(BB, INPUT_PULLUP);
+  pinMode(BX, INPUT_PULLUP);
+  pinMode(BY, INPUT_PULLUP);
+
+ 
 
   Serial.begin(19200);
   AbsMouse.init(screenW, screenH);
@@ -69,6 +99,56 @@ void handleButtons() {
   int triggerB_now = digitalRead(triggerB);
   int mag_now = digitalRead(mag);
   int lid_now = digitalRead(lid);
+  
+  // andres extra buttons
+  int BA_now = digitalRead(BA);
+  int BB_now = digitalRead(BB);
+  int BX_now = digitalRead(BY);
+  int BY_now = digitalRead(BX);
+   
+  // Boton A   
+    if (BA_now != button_BA) {
+    button_BA = BA_now;
+    if (button_BA == 0) {
+      Keyboard.press(Teclado_A);
+    }
+  } else {
+    Keyboard.release(Teclado_A);
+  }
+// End Boton A 
+
+  // Boton B   
+    if (BB_now != button_BB) {
+    button_BB = BB_now;
+    if (button_BB == 0) {
+      Keyboard.press(Teclado_B);
+    }
+  } else {
+    Keyboard.release(Teclado_B);
+  }
+// End Boton B 
+
+  // Boton X   
+    if (BX_now != button_BX) {
+    button_BX = BX_now;
+    if (button_BX == 0) {
+      Keyboard.press(Teclado_X);
+    }
+  } else {
+    Keyboard.release(Teclado_X);
+  }
+// End Boton X 
+
+// Boton Y   
+    if (BY_now != button_BY) {
+    button_BY = BY_now;
+    if (button_BY == 0) {
+      Keyboard.press(Teclado_Y);
+    }
+  } else {
+    Keyboard.release(Teclado_Y);
+  }
+// End Boton Y 
 
   if (triggerA_now != button_triggerA) {
     button_triggerA = triggerA_now;
