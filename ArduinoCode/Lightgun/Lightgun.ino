@@ -7,20 +7,20 @@
 
 #define triggerA 8  // Click izquierda mouse
 #define triggerB 9  // Click derecho mouse
-#define lid 7       // Click medio mouse
+#define lid 10       // Click medio mouse
 #define mag 6       // Backspace keyboard
 #define fireLED 4   // LED DISPARO
 #define warningLED 5 // LED no 4 puntos
 
 //Andres defino las los pines de los botones extras
-#define BA 10 // A keyboard
+#define BA 7 // A keyboard
 #define BB 16 // B keyboard
 #define BX 14 // X keyboard
 #define BY 15 // Y keyboard
 
 //Andres defino las teclas
-uint8_t Teclado_A =   0x41;                  // Letra A
-uint8_t Teclado_B =   0x42;                  // Letra B
+uint8_t Teclado_A =   0x61;                  // Letra A
+uint8_t Teclado_B =   0x62;                  // Letra B
 uint8_t Teclado_X =   0x58;                  // Letra X
 uint8_t Teclado_Y =   0x59;                  // Letra Y
 
@@ -50,13 +50,13 @@ int button_BY = 0;
 
 int warningLEDState = 0;
 
-int screenW = 1920;
-int screenH = 1080;
+int screenW = (1920); //1920
+int screenH = (1080); //1080
 
-//int gunCenterX = 530;
-//int gunCenterY = 312;
-int gunCenterX = 595;
-int gunCenterY = 325;
+int gunCenterX = 530;// calibracion con fish eye lens
+int gunCenterY = 480;// calibracion con fish eye lens
+//int gunCenterX = 650;
+//int gunCenterY = 418;
 
 
 
@@ -105,26 +105,28 @@ void handleButtons() {
   int BB_now = digitalRead(BB);
   int BX_now = digitalRead(BY);
   int BY_now = digitalRead(BX);
+
+
    
-  // Boton A   
-    if (BA_now != button_BA) {
-    button_BA = BA_now;
-    if (button_BA == 0) {
-      Keyboard.press(Teclado_A);
-    }
-  } else {
-    Keyboard.release(Teclado_A);
-  }
+// Boton A   
+//    if (BA_now != button_BA) {
+//    button_BA = BA_now;
+//    if (button_BA == 0) {
+//      AbsMouse.press(MOUSE_MIDDLE);
+//    }
+//  } else {
+//    AbsMouse.release(MOUSE_MIDDLE);
+//  }
 // End Boton A 
 
   // Boton B   
     if (BB_now != button_BB) {
     button_BB = BB_now;
     if (button_BB == 0) {
-      Keyboard.press(Teclado_B);
+      Keyboard.press(KEY_RETURN);
     }
   } else {
-    Keyboard.release(Teclado_B);
+    Keyboard.release(KEY_RETURN);
   }
 // End Boton B 
 
