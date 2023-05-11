@@ -3,7 +3,23 @@
 #include "DFRobotIRPosition.h"
 #include "AbsMouse.h"
 #include <Keyboard.h>
-#include "Wire.h"
+ #include "Wire.h" 
+
+#include "Joystick.h"
+// Create the Joystick
+int lastButtonState[1] = {0}; 
+
+
+
+
+
+
+Joystick_ Joystick(0x04,JOYSTICK_TYPE_GAMEPAD,
+  4, 0,                  // Button Count, Hat Switch Count
+  false, false, false,     // X and Y, but no Z Axis
+  false, false, false,   // No Rx, Ry, or Rz
+  false, false,          // No rudder or throttle
+  false, false, false);  // No accelerator, brake, or steering 
 
 #define triggerA 8  // Click izquierda mouse
 #define triggerB 9  // Click derecho mouse
@@ -75,8 +91,9 @@ void setup() {
   pinMode(BB, INPUT_PULLUP);
   pinMode(BX, INPUT_PULLUP);
   pinMode(BY, INPUT_PULLUP);
-
  
+  // Initialize Joystick Library
+  Joystick.begin(); 
 
   Serial.begin(19200);
   AbsMouse.init(screenW, screenH);
@@ -94,6 +111,7 @@ void loop() {
   moveCursor();
 }
 
+
 void handleButtons() {
   int triggerA_now = digitalRead(triggerA);
   int triggerB_now = digitalRead(triggerB);
@@ -105,6 +123,18 @@ void handleButtons() {
   int BB_now = digitalRead(BB);
   int BX_now = digitalRead(BY);
   int BY_now = digitalRead(BX);
+
+
+// Read pin values
+  for (int index = 0; index < 1; index++)
+  {
+    int currentButtonState = !digitalRead(index + BB);
+    if (currentButtonState != lastButtonState[index])
+    {
+      Joystick.setButton(index, currentButtonState);
+      lastButtonState[index] = currentButtonState;
+    }
+  }
 
 
    
@@ -119,7 +149,9 @@ void handleButtons() {
 //  }
 // End Boton A 
 
-  // Boton B   
+
+
+/*   // Boton B   
     if (BB_now != button_BB) {
     button_BB = BB_now;
     if (button_BB == 0) {
@@ -128,7 +160,7 @@ void handleButtons() {
   } else {
     Keyboard.release(KEY_RETURN);
   }
-// End Boton B 
+// End Boton B  */
 
   // Boton X   
     if (BX_now != button_BX) {
